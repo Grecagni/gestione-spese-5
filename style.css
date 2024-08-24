@@ -151,7 +151,15 @@ h1, h2 {
     margin-bottom: 0.25rem; /* Ridotto lo spazio tra le voci */
 }
 
-/* Stili per la data con sfondo chiaro e trasparente */
+/* Stili per l'intera card con sfondo trasparente */
+.card {
+    background-color: rgba(255, 255, 255, 0.8); /* Sfondo bianco trasparente */
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Stili per la data */
 .card .badge {
     font-size: 0.9rem;
     padding: 5px 10px;
