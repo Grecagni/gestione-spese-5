@@ -37,6 +37,58 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    const expenseForm = document.getElementById('expenseForm');
+    if (expenseForm) {
+        expenseForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const description = document.getElementById('description').value;
+            const date = document.getElementById('date').value;
+            const totalAmount = parseFloat(document.getElementById('totalAmount').value);
+            const jackAmount = parseFloat(document.getElementById('jackAmount').value);
+            const steAmount = parseFloat(document.getElementById('steAmount').value);
+            const splitType = document.getElementById('splitType').value;
+            let jackShare, steShare;
+
+            if (splitType === 'equally') {
+                jackShare = totalAmount / 2;
+                steShare = totalAmount / 2;
+            } else {
+                jackShare = parseFloat(document.getElementById('jackShare').value);
+                steShare = parseFloat(document.getElementById('steShare').value);
+            }
+
+            console.log("Descrizione:", description);
+            console.log("Data:", date);
+            console.log("Importo totale:", totalAmount);
+            console.log("Jack ha messo:", jackAmount);
+            console.log("Ste ha messo:", steAmount);
+            console.log("Jack deve:", jackShare);
+            console.log("Ste deve:", steShare);
+
+            if ((jackAmount + steAmount) !== totalAmount) {
+                alert('La somma degli importi messi da Jack e Ste non corrisponde al totale della spesa.');
+                return;
+            }
+
+            db.collection("expenses").add({
+                description,
+                date,
+                totalAmount,
+                jackAmount,
+                steAmount,
+                jackShare,
+                steShare
+            }).then(() => {
+                console.log("Spesa aggiunta con successo!");
+                window.location.href = '/gestione-spese-2-v2/expenses.html';
+            }).catch((error) => {
+                console.error("Errore durante l'aggiunta della spesa:", error);
+                alert("Errore durante l'aggiunta della spesa. Si prega di riprovare.");
+            });
+        });
+    }
 });
 
 function toggleAuthUI(user) {
@@ -110,6 +162,54 @@ function displayHomeContent() {
         balanceBarFill.style.width = percent + '%';
         balanceBarFill.style.backgroundColor = totaleSaldo === 0 ? '#28a745' : (totaleSaldo > 0 ? '#007bff' : '#dc3545');
     });
+}
+
+function displayExpenses() {
+    const expenseList = document.getElementById('expenseList');
+    
+    db.collection("expenses").orderBy("date", "desc").onSnapshot((querySnapshot) => {
+        console.log("Documenti recuperati:", querySnapshot.docs.length);
+
+        if (expenseList) {
+            expenseList.innerHTML = '';
+        }
+
+        querySnapshot.forEach((doc) => {
+            const expense = doc.data();
+            console.log(expense);
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${formatDate(expense.date)}</td>
+                <td>${expense.description}</td>
+                <td>€${parseFloat(expense.totalAmount).toFixed(2)}</td>
+                <td>€${parseFloat(expense.jackAmount).toFixed(2)}</td>
+                <td>€${parseFloat(expense.steAmount).toFixed(2)}</td>
+                <td>€${parseFloat(expense.jackShare).toFixed(2)}</td>
+                <td>€${parseFloat(expense.steShare).toFixed(2)}</td>
+                <td><button class="btn btn-danger" onclick="confirmDeleteExpense('${doc.id}')">X</button></td>
+            `;
+            if (expenseList) {
+                expenseList.appendChild(row);
+            }
+        });
+    });
+}
+
+function confirmDeleteExpense(id) {
+    if (confirm("Sei sicuro di voler eliminare questa spesa?")) {
+        deleteExpense(id);
+    }
+}
+
+function deleteExpense(id) {
+    db.collection("expenses").doc(id).delete()
+        .then(() => {
+            displayExpenses();
+        })
+        .catch((error) => {
+            console.error("Errore nell'eliminare la spesa: ", error);
+        });
 }
 
 function formatDate(dateString) {
