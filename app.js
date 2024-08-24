@@ -71,8 +71,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function toggleAuthUI(user) {
-    const isLoggedIn = !!user;
-    document.getElementById('login-container').style.display = isLoggedIn ? 'none' : 'block';
-    document.getElementById('content-container').style.display = isLoggedIn ? 'block' : 'none';
-    document.getElementById('navbar').style.display = isLoggedIn ? 'block' : 'none';
+    const loginContainer = document.getElementById('login-container');
+    const contentContainer = document.getElementById('content-container');
+    const navbar = document.getElementById('navbar');
+    
+    // Verifica se gli elementi esistono prima di accedere alle loro proprietà
+    if (loginContainer) {
+        loginContainer.style.display = user ? 'none' : 'block';
+    }
+    if (contentContainer) {
+        contentContainer.style.display = user ? 'block' : 'none';
+    }
+    if (navbar) {
+        navbar.style.display = user ? 'block' : 'none';
+    }
 }
