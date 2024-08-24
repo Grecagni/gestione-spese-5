@@ -27,8 +27,23 @@
         const db = firebase.firestore();
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Imposta la data odierna come valore predefinito
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+
             const expenseForm = document.getElementById('expenseForm');
-            
+            const splitType = document.getElementById('splitType');
+            const splitDetails = document.getElementById('splitDetails');
+
+            // Mostra o nasconde le celle di input per l'importo esatto
+            splitType.addEventListener('change', function() {
+                if (splitType.value === 'exact') {
+                    splitDetails.style.display = 'block';
+                } else {
+                    splitDetails.style.display = 'none';
+                }
+            });
+
             if (expenseForm) {
                 expenseForm.addEventListener('submit', function(e) {
                     e.preventDefault();
@@ -38,10 +53,9 @@
                     const totalAmount = parseFloat(document.getElementById('totalAmount').value);
                     const jackAmount = parseFloat(document.getElementById('jackAmount').value);
                     const steAmount = parseFloat(document.getElementById('steAmount').value);
-                    const splitType = document.getElementById('splitType').value;
                     let jackShare, steShare;
 
-                    if (splitType === 'equally') {
+                    if (splitType.value === 'equally') {
                         jackShare = totalAmount / 2;
                         steShare = totalAmount / 2;
                     } else {
@@ -118,7 +132,7 @@
                     </select>
                 </div>
 
-                <div id="splitDetails">
+                <div id="splitDetails" style="display: none;">
                     <div class="form-row mb-3">
                         <label class="col-sm-4 col-form-label">Dovuto da Jack:</label>
                         <div class="col-sm-8">
