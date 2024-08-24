@@ -61,6 +61,11 @@
                     } else {
                         jackShare = parseFloat(document.getElementById('jackShare').value);
                         steShare = parseFloat(document.getElementById('steShare').value);
+
+                        if ((jackShare + steShare) !== totalAmount) {
+                            alert('La somma degli importi dovuti da Jack e Ste non corrisponde al totale della spesa.');
+                            return;
+                        }
                     }
 
                     console.log("Descrizione:", description);
