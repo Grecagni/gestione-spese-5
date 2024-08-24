@@ -13,8 +13,16 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
+    <!-- Configurazione Firebase -->
     <script>
-        var firebaseConfig = { /* Firebase Config */ };
+        var firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
@@ -50,7 +58,20 @@
                 return;
             }
 
-            this.submit();
+            db.collection("expenses").add({
+                description: document.getElementById('description').value,
+                date: document.getElementById('date').value,
+                totalAmount,
+                jackAmount,
+                steAmount,
+                jackShare,
+                steShare
+            }).then(() => {
+                console.log("Spesa aggiunta con successo!");
+                window.location.href = '/gestione-spese-2-v2/expenses.html';
+            }).catch((error) => {
+                console.error("Errore durante l'aggiunta della spesa:", error);
+            });
         });
     </script>
 </head>
@@ -59,13 +80,65 @@
         <h2 class="my-4">Inserisci Nuova Spesa</h2>
         <div id="expenseFormContainer" class="card p-4 mb-4">
             <form id="expenseForm" class="form-group">
-                <!-- Form Inputs -->
+                <input type="text" id="description" class="form-control mb-3" placeholder="Descrizione spesa" required>
+                <input type="date" id="date" class="form-control mb-3" required>
+                <input type="number" id="totalAmount" class="form-control mb-3" placeholder="Importo totale" required>
+
+                <h3>Chi ha messo cosa:</h3>
+                <div id="payers">
+                    <div class="form-row mb-3">
+                        <label class="col-sm-4 col-form-label">Jack:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="jackAmount" class="form-control" placeholder="Importo messo da Jack" required>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <label class="col-sm-4 col-form-label">Ste:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="steAmount" class="form-control" placeholder="Importo messo da Ste" required>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Divisione della spesa:</h3>
+                <div id="splitMethod" class="mb-3">
+                    <label for="splitType">Tipo di divisione:</label>
+                    <select id="splitType" class="form-control">
+                        <option value="equally">Equamente</option>
+                        <option value="exact">Importo esatto</option>
+                    </select>
+                </div>
+
+                <div id="splitDetails">
+                    <div class="form-row mb-3">
+                        <label class="col-sm-4 col-form-label">Dovuto da Jack:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="jackShare" class="form-control" placeholder="Importo dovuto da Jack">
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <label class="col-sm-4 col-form-label">Dovuto da Ste:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="steShare" class="form-control" placeholder="Importo dovuto da Ste">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success">Aggiungi Spesa</button>
             </form>
         </div>
     </div>
 
+    <!-- Barra di navigazione -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom" id="navbar">
-        <!-- Navbar Items -->
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/gestione-spese-2-v2/index.html">Home</a>
+            <a class="navbar-brand" href="/gestione-spese-2-v2/add-expense.html">+</a>
+            <a class="navbar-brand" href="/gestione-spese-2-v2/expenses.html">Spese</a>
+        </div>
     </nav>
+
+    <!-- Caricamento di app.js DOPO Firebase -->
+    <script src="/gestione-spese-2-v2/app.js"></script>
 </body>
 </html>
