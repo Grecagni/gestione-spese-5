@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/gestione-spese-2/service-worker.js')
+            navigator.serviceWorker.register('/gestione-spese-2-v2/service-worker.js')
                 .then(registration => {
                     console.log('Service Worker registrato con successo:', registration);
                 })
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
             db.collection("expenses").add(expenseData)
                 .then(() => {
                     console.log("Spesa aggiunta con successo!");
-                    window.location.href = '/gestione-spese-2/expenses.html';
+                    window.location.href = '/gestione-spese-2-v2/expenses.html';
                 })
                 .catch((error) => {
                     console.error("Errore durante l'aggiunta della spesa:", error);
