@@ -37,37 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-
-    const expenseForm = document.getElementById('expenseForm');
-    if (expenseForm) {
-        expenseForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const expenseData = {
-                description: document.getElementById('description').value,
-                date: document.getElementById('date').value,
-                totalAmount: parseFloat(document.getElementById('totalAmount').value),
-                jackAmount: parseFloat(document.getElementById('jackAmount').value),
-                steAmount: parseFloat(document.getElementById('steAmount').value),
-                jackShare: parseFloat(document.getElementById('jackShare').value) || (parseFloat(document.getElementById('totalAmount').value) / 2),
-                steShare: parseFloat(document.getElementById('steShare').value) || (parseFloat(document.getElementById('totalAmount').value) / 2),
-            };
-
-            if ((expenseData.jackAmount + expenseData.steAmount) !== expenseData.totalAmount) {
-                alert('La somma degli importi messi da Jack e Ste non corrisponde al totale della spesa.');
-                return;
-            }
-
-            db.collection("expenses").add(expenseData)
-                .then(() => {
-                    console.log("Spesa aggiunta con successo!");
-                    window.location.href = '/gestione-spese-2-v2/expenses.html';
-                })
-                .catch((error) => {
-                    console.error("Errore durante l'aggiunta della spesa:", error);
-                });
-        });
-    }
 });
 
 function toggleAuthUI(user) {
@@ -75,7 +44,6 @@ function toggleAuthUI(user) {
     const contentContainer = document.getElementById('content-container');
     const navbar = document.getElementById('navbar');
     
-    // Verifica se gli elementi esistono prima di accedere alle loro proprietà
     if (loginContainer) {
         loginContainer.style.display = user ? 'none' : 'block';
     }
@@ -85,4 +53,67 @@ function toggleAuthUI(user) {
     if (navbar) {
         navbar.style.display = user ? 'block' : 'none';
     }
+}
+
+function displayHomeContent() {
+    const recentExpensesList = document.getElementById('recentExpenses');
+    const totalBalanceDiv = document.getElementById('totalBalance');
+    const balanceBarFill = document.getElementById('balanceBarFill');
+
+    db.collection("expenses").orderBy("date", "desc").limit(5).get().then((querySnapshot) => {
+        let totalJackMesso = 0; // Quanto Jack ha messo
+        let totalSteMesso = 0; // Quanto Stefania ha messo
+        let totalJackDovuto = 0; // Quanto Jack doveva mettere
+        let totalSteDovuto = 0; // Quanto Stefania doveva mettere
+
+        if (recentExpensesList) {
+            recentExpensesList.innerHTML = '';
+        }
+
+        querySnapshot.forEach((doc) => {
+            const expense = doc.data();
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.textContent = `${formatDate(expense.date)} - ${expense.description}: €${parseFloat(expense.totalAmount).toFixed(2)}`;
+            if (recentExpensesList) {
+                recentExpensesList.appendChild(listItem);
+            }
+
+            totalJackMesso += parseFloat(expense.jackAmount);
+            totalSteMesso += parseFloat(expense.steAmount);
+            totalJackDovuto += parseFloat(expense.jackShare);
+            totalSteDovuto += parseFloat(expense.steShare);
+        });
+
+        // Calcolo del saldo per Jack e Stefania
+        const saldoJack = totalJackMesso - totalJackDovuto;
+        const saldoSte = totalSteMesso - totalSteDovuto;
+        const totaleSaldo = saldoJack - saldoSte;
+
+        let balanceText = '';
+
+        if (totaleSaldo > 0) {
+            balanceText = `Stefania deve dare a Jack: €${totaleSaldo.toFixed(2)}`;
+        } else if (totaleSaldo < 0) {
+            balanceText = `Jack deve dare a Stefania: €${Math.abs(totaleSaldo).toFixed(2)}`;
+        } else {
+            balanceText = `Jack e Stefania sono pari.`;
+        }
+
+        if (totalBalanceDiv) {
+            totalBalanceDiv.textContent = balanceText;
+        }
+
+        // Aggiorna la barra di stato
+        const maxBalance = Math.max(totalJackMesso, totalSteMesso);
+        const percent = (totaleSaldo + maxBalance) / (2 * maxBalance) * 100;
+        balanceBarFill.style.width = percent + '%';
+        balanceBarFill.style.backgroundColor = totaleSaldo === 0 ? '#28a745' : (totaleSaldo > 0 ? '#007bff' : '#dc3545');
+    });
+}
+
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('it-IT', options);
 }
