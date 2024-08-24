@@ -27,51 +27,60 @@
         const db = firebase.firestore();
 
         document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('date').value = today;
-            toggleSplitDetails();
-            document.getElementById('splitType').addEventListener('change', toggleSplitDetails);
-        });
-
-        function toggleSplitDetails() {
-            const splitType = document.getElementById('splitType').value;
-            const splitDetails = document.getElementById('splitDetails');
-            splitDetails.style.display = splitType === 'equally' ? 'none' : 'block';
-        }
-
-        document.getElementById('expenseForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+            const expenseForm = document.getElementById('expenseForm');
             
-            const totalAmount = parseFloat(document.getElementById('totalAmount').value);
-            const jackAmount = parseFloat(document.getElementById('jackAmount').value);
-            const steAmount = parseFloat(document.getElementById('steAmount').value);
-            const jackShare = parseFloat(document.getElementById('jackShare').value) || 0;
-            const steShare = parseFloat(document.getElementById('steShare').value) || 0;
+            if (expenseForm) {
+                expenseForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
 
-            if ((jackAmount + steAmount) !== totalAmount) {
-                alert('La somma degli importi messi da Jack e Ste non corrisponde al totale della spesa.');
-                return;
+                    const description = document.getElementById('description').value;
+                    const date = document.getElementById('date').value;
+                    const totalAmount = parseFloat(document.getElementById('totalAmount').value);
+                    const jackAmount = parseFloat(document.getElementById('jackAmount').value);
+                    const steAmount = parseFloat(document.getElementById('steAmount').value);
+                    const splitType = document.getElementById('splitType').value;
+                    let jackShare, steShare;
+
+                    if (splitType === 'equally') {
+                        jackShare = totalAmount / 2;
+                        steShare = totalAmount / 2;
+                    } else {
+                        jackShare = parseFloat(document.getElementById('jackShare').value);
+                        steShare = parseFloat(document.getElementById('steShare').value);
+                    }
+
+                    console.log("Descrizione:", description);
+                    console.log("Data:", date);
+                    console.log("Importo totale:", totalAmount);
+                    console.log("Jack ha messo:", jackAmount);
+                    console.log("Ste ha messo:", steAmount);
+                    console.log("Jack deve:", jackShare);
+                    console.log("Ste deve:", steShare);
+
+                    if ((jackAmount + steAmount) !== totalAmount) {
+                        alert('La somma degli importi messi da Jack e Ste non corrisponde al totale della spesa.');
+                        return;
+                    }
+
+                    db.collection("expenses").add({
+                        description,
+                        date,
+                        totalAmount,
+                        jackAmount,
+                        steAmount,
+                        jackShare,
+                        steShare
+                    }).then(() => {
+                        console.log("Spesa aggiunta con successo!");
+                        window.location.href = '/gestione-spese-2-v2/expenses.html';
+                    }).catch((error) => {
+                        console.error("Errore durante l'aggiunta della spesa:", error);
+                        alert("Errore durante l'aggiunta della spesa. Si prega di riprovare.");
+                    });
+                });
+            } else {
+                console.error("Elemento 'expenseForm' non trovato nel DOM.");
             }
-
-            if (document.getElementById('splitType').value === 'exact' && (jackShare + steShare) !== totalAmount) {
-                alert('La somma degli importi dovuti da Jack e Ste non corrisponde al totale della spesa.');
-                return;
-            }
-
-            db.collection("expenses").add({
-                description: document.getElementById('description').value,
-                date: document.getElementById('date').value,
-                totalAmount,
-                jackAmount,
-                steAmount,
-                jackShare,
-                steShare
-            }).then(() => {
-                console.log("Spesa aggiunta con successo!");
-                window.location.href = '/gestione-spese-2-v2/expenses.html';
-            }).catch((error) => {
-                console.error("Errore durante l'aggiunta della spesa:", error);
-            });
         });
     </script>
 </head>
