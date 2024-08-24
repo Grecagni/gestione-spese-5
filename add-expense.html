@@ -7,33 +7,17 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- CSS Personalizzato -->
     <link rel="stylesheet" href="/gestione-spese-2/style.css">
-
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-    <!-- Configurazione Firebase -->
     <script>
-        var firebaseConfig = {
-            apiKey: "AIzaSyA6usjd2E5ytJz8Mx9SqjQXGXPgnOAeqYw",
-            authDomain: "gestione-spese-2-5db43.firebaseapp.com",
-            projectId: "gestione-spese-2-5db43",
-            storageBucket: "gestione-spese-2-5db43.appspot.com",
-            messagingSenderId: "583349146945",
-            appId: "1:583349146945:web:af0989d9c1889b1ef77dc0"
-        };
+        var firebaseConfig = { /* Firebase Config */ };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-    </script>
-    <script>
-        // Imposta la data odierna come valore predefinito
+
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('date').value = today;
@@ -41,40 +25,31 @@
             document.getElementById('splitType').addEventListener('change', toggleSplitDetails);
         });
 
-        // Funzione per mostrare o nascondere i campi "Dovuto da Jack" e "Dovuto da Ste"
         function toggleSplitDetails() {
             const splitType = document.getElementById('splitType').value;
             const splitDetails = document.getElementById('splitDetails');
-            if (splitType === 'equally') {
-                splitDetails.style.display = 'none';
-            } else {
-                splitDetails.style.display = 'block';
-            }
+            splitDetails.style.display = splitType === 'equally' ? 'none' : 'block';
         }
 
-        // Controlla che gli importi siano coerenti e blocca l'inserimento se non lo sono
         document.getElementById('expenseForm').addEventListener('submit', function(e) {
-            e.preventDefault();  // Blocca l'invio del form inizialmente
+            e.preventDefault();
             
             const totalAmount = parseFloat(document.getElementById('totalAmount').value);
             const jackAmount = parseFloat(document.getElementById('jackAmount').value);
             const steAmount = parseFloat(document.getElementById('steAmount').value);
             const jackShare = parseFloat(document.getElementById('jackShare').value) || 0;
             const steShare = parseFloat(document.getElementById('steShare').value) || 0;
-            
-            // Controllo se gli importi messi sono corretti
+
             if ((jackAmount + steAmount) !== totalAmount) {
                 alert('La somma degli importi messi da Jack e Ste non corrisponde al totale della spesa.');
-                return;  // Non permettere l'invio
+                return;
             }
 
-            // Controllo se la divisione della spesa è corretta
             if (document.getElementById('splitType').value === 'exact' && (jackShare + steShare) !== totalAmount) {
                 alert('La somma degli importi dovuti da Jack e Ste non corrisponde al totale della spesa.');
-                return;  // Non permettere l'invio
+                return;
             }
 
-            // Se i controlli passano, invia il form
             this.submit();
         });
     </script>
@@ -84,65 +59,13 @@
         <h2 class="my-4">Inserisci Nuova Spesa</h2>
         <div id="expenseFormContainer" class="card p-4 mb-4">
             <form id="expenseForm" class="form-group">
-                <input type="text" id="description" class="form-control mb-3" placeholder="Descrizione spesa" required>
-                <input type="date" id="date" class="form-control mb-3" required>
-                <input type="number" id="totalAmount" class="form-control mb-3" placeholder="Importo totale" required>
-
-                <h3>Chi ha messo cosa:</h3>
-                <div id="payers">
-                    <div class="form-row mb-3">
-                        <label class="col-sm-4 col-form-label">Jack:</label>
-                        <div class="col-sm-8">
-                            <input type="number" id="jackAmount" class="form-control" placeholder="Importo messo da Jack" required>
-                        </div>
-                    </div>
-                    <div class="form-row mb-3">
-                        <label class="col-sm-4 col-form-label">Ste:</label>
-                        <div class="col-sm-8">
-                            <input type="number" id="steAmount" class="form-control" placeholder="Importo messo da Ste" required>
-                        </div>
-                    </div>
-                </div>
-
-                <h3>Divisione della spesa:</h3>
-                <div id="splitMethod" class="mb-3">
-                    <label for="splitType">Tipo di divisione:</label>
-                    <select id="splitType" class="form-control">
-                        <option value="equally">Equamente</option>
-                        <option value="exact">Importo esatto</option>
-                    </select>
-                </div>
-
-                <div id="splitDetails">
-                    <div class="form-row mb-3">
-                        <label class="col-sm-4 col-form-label">Dovuto da Jack:</label>
-                        <div class="col-sm-8">
-                            <input type="number" id="jackShare" class="form-control" placeholder="Importo dovuto da Jack">
-                        </div>
-                    </div>
-                    <div class="form-row mb-3">
-                        <label class="col-sm-4 col-form-label">Dovuto da Ste:</label>
-                        <div class="col-sm-8">
-                            <input type="number" id="steShare" class="form-control" placeholder="Importo dovuto da Ste">
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-success">Aggiungi Spesa</button>
+                <!-- Form Inputs -->
             </form>
         </div>
     </div>
 
-    <!-- Barra di navigazione -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom" style="display: none;" id="navbar">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/gestione-spese-2/index.html">Home</a>
-            <a class="navbar-brand" href="/gestione-spese-2/add-expense.html">+</a>
-            <a class="navbar-brand" href="/gestione-spese-2/expenses.html">Spese</a>
-        </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom" id="navbar">
+        <!-- Navbar Items -->
     </nav>
-
-    <!-- Caricamento di app.js DOPO Firebase -->
-    <script src="/gestione-spese-2/app.js"></script>
 </body>
 </html>
