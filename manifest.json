@@ -2,7 +2,7 @@
     "name": "Gestione Spese",
     "short_name": "Spese",
     "start_url": "/gestione-spese-2-v2/index.html",
-    "display": "fullscreen",
+    "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#007aff",
     "icons": [
