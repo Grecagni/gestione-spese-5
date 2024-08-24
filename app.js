@@ -37,58 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-
-    const expenseForm = document.getElementById('expenseForm');
-    if (expenseForm) {
-        expenseForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const description = document.getElementById('description').value;
-            const date = document.getElementById('date').value;
-            const totalAmount = parseFloat(document.getElementById('totalAmount').value);
-            const jackAmount = parseFloat(document.getElementById('jackAmount').value);
-            const steAmount = parseFloat(document.getElementById('steAmount').value);
-            const splitType = document.getElementById('splitType').value;
-            let jackShare, steShare;
-
-            if (splitType === 'equally') {
-                jackShare = totalAmount / 2;
-                steShare = totalAmount / 2;
-            } else {
-                jackShare = parseFloat(document.getElementById('jackShare').value);
-                steShare = parseFloat(document.getElementById('steShare').value);
-            }
-
-            console.log("Descrizione:", description);
-            console.log("Data:", date);
-            console.log("Importo totale:", totalAmount);
-            console.log("Jack ha messo:", jackAmount);
-            console.log("Ste ha messo:", steAmount);
-            console.log("Jack deve:", jackShare);
-            console.log("Ste deve:", steShare);
-
-            if ((jackAmount + steAmount) !== totalAmount) {
-                alert('La somma degli importi messi da Jack e Ste non corrisponde al totale della spesa.');
-                return;
-            }
-
-            db.collection("expenses").add({
-                description,
-                date,
-                totalAmount,
-                jackAmount,
-                steAmount,
-                jackShare,
-                steShare
-            }).then(() => {
-                console.log("Spesa aggiunta con successo!");
-                window.location.href = '/gestione-spese-2-v2/expenses.html';
-            }).catch((error) => {
-                console.error("Errore durante l'aggiunta della spesa:", error);
-                alert("Errore durante l'aggiunta della spesa. Si prega di riprovare.");
-            });
-        });
-    }
 });
 
 function toggleAuthUI(user) {
@@ -138,16 +86,14 @@ function displayHomeContent() {
         });
 
         // Calcolo del saldo per Jack e Stefania
-        const saldoJack = totalJackMesso - totalJackDovuto;
-        const saldoSte = totalSteMesso - totalSteDovuto;
-        const totaleSaldo = saldoJack - saldoSte;
+        const saldo = totalJackMesso - totalJackDovuto;
 
         let balanceText = '';
 
-        if (totaleSaldo > 0) {
-            balanceText = `Stefania deve dare a Jack: €${totaleSaldo.toFixed(2)}`;
-        } else if (totaleSaldo < 0) {
-            balanceText = `Jack deve dare a Stefania: €${Math.abs(totaleSaldo).toFixed(2)}`;
+        if (saldo > 0) {
+            balanceText = `Stefania deve dare a Jack: €${saldo.toFixed(2)}`;
+        } else if (saldo < 0) {
+            balanceText = `Jack deve dare a Stefania: €${Math.abs(saldo).toFixed(2)}`;
         } else {
             balanceText = `Jack e Stefania sono pari.`;
         }
@@ -157,10 +103,10 @@ function displayHomeContent() {
         }
 
         // Aggiorna la barra di stato
-        const maxBalance = Math.max(totalJackMesso, totalSteMesso);
-        const percent = (totaleSaldo + maxBalance) / (2 * maxBalance) * 100;
+        const maxBalance = Math.max(Math.abs(totalJackMesso), Math.abs(totalJackDovuto));
+        const percent = (saldo + maxBalance) / (2 * maxBalance) * 100;
         balanceBarFill.style.width = percent + '%';
-        balanceBarFill.style.backgroundColor = totaleSaldo === 0 ? '#28a745' : (totaleSaldo > 0 ? '#007bff' : '#dc3545');
+        balanceBarFill.style.backgroundColor = saldo === 0 ? '#28a745' : (saldo > 0 ? '#007bff' : '#dc3545');
     });
 }
 
