@@ -86,7 +86,8 @@ h1, h2 {
 .navbar .navbar-brand {
     color: #007bff;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 1.2rem; /* Aumentato da 0.9rem a 1.2rem per rendere i pulsanti più grandi */
+    padding: 10px 15px; /* Aggiustato il padding per un tocco migliore */
 }
 
 .navbar .navbar-brand:hover {
