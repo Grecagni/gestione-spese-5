@@ -20,19 +20,19 @@ h1, h2 {
 
 /* Stili per la tabella */
 #expenseTable {
-    width: 80%;
+    width: 100%;
     border-collapse: collapse;
-    margin: 4px 0;
-    font-size: 0.5rem; /* Testo piccolo ridotto */
+    margin: 20px 0;
+    font-size: 0.75rem; /* Testo piccolo ridotto */
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 #expenseTable th, #expenseTable td {
-    padding: 2px; /* Ridotto per adattarsi meglio */
+    padding: 4px; /* Ridotto per adattarsi meglio */
     text-align: center;
     border: 1px solid #A5D6A7; /* Bordi chiari per le celle */
     white-space: nowrap; /* Adatta la cella al contenuto */
-    font-size: 0.5rem; /* Assicurati che la dimensione del testo sia ridotta anche nelle celle */
+    font-size: 0.75rem; /* Assicurati che la dimensione del testo sia ridotta anche nelle celle */
 }
 
 #expenseTable th {
@@ -52,10 +52,10 @@ h1, h2 {
 
 /* Riduci la dimensione del pulsante X */
 #expenseTable .btn-delete {
-    padding: 1px 1px !important; /* Riduci il padding per un pulsante compatto */
-    font-size: 0.5rem !important; /* Assicura una dimensione del testo ridotta */
+    padding: 2px 5px !important; /* Riduci il padding per un pulsante compatto */
+    font-size: 0.75rem !important; /* Assicura una dimensione del testo ridotta */
     line-height: 1 !important; /* Riduci l'altezza della linea */
-    border-radius: 1px !important; /* Bordo arrotondato piccolo */
+    border-radius: 3px !important; /* Bordo arrotondato piccolo */
     background-color: #dc3545 !important; /* Colore rosso per il pulsante */
     color: white !important; /* Colore del testo bianco */
     border: none !important; /* Nessun bordo */
