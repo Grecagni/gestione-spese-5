@@ -4,15 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Spese - Spese</title>
+
+    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS Personalizzato -->
     <link rel="stylesheet" href="/gestione-spese-2-v2/style.css">
+
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
+    <!-- Configurazione Firebase -->
     <script>
-        var firebaseConfig = { /* Firebase Config */ };
+        var firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
@@ -45,6 +61,28 @@
                 });
             });
         }
+
+        function confirmDeleteExpense(id) {
+            if (confirm("Sei sicuro di voler eliminare questa spesa?")) {
+                deleteExpense(id);
+            }
+        }
+
+        function deleteExpense(id) {
+            db.collection("expenses").doc(id).delete()
+                .then(() => {
+                    displayExpenses();
+                })
+                .catch((error) => {
+                    console.error("Errore nell'eliminare la spesa: ", error);
+                });
+        }
+
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+            const date = new Date(dateString);
+            return date.toLocaleDateString('it-IT', options);
+        }
     </script>
 </head>
 <body>
@@ -52,8 +90,14 @@
         <h2 class="my-4">Elenco Spese</h2>
         <div id="expenseList"></div>
     </div>
+
+    <!-- Barra di navigazione -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom">
-        <!-- Navbar Items -->
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/gestione-spese-2-v2/index.html">Home</a>
+            <a class="navbar-brand" href="/gestione-spese-2-v2/add-expense.html">+</a>
+            <a class="navbar-brand" href="/gestione-spese-2-v2/expenses.html">Spese</a>
+        </div>
     </nav>
 </body>
 </html>
