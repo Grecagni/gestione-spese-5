@@ -49,10 +49,11 @@
                     const card = document.createElement('div');
                     card.className = 'card mb-3';
                     const dateColor = getDateColor(expense.date);
+                    card.style.backgroundColor = dateColor; // Applica il colore di sfondo alla card
                     card.innerHTML = `
                         <div class="card-body">
                             <h5 class="card-title">${expense.description}</h5>
-                            <span class="badge" style="background-color: ${dateColor}; opacity: 0.8;">${formatDate(expense.date)}</span>
+                            <span class="badge">${formatDate(expense.date)}</span>
                             <p class="card-text mt-2"><strong>Totale:</strong> €${parseFloat(expense.totalAmount).toFixed(2)}</p>
                             <p class="card-text"><strong>Jack ha messo:</strong> €${parseFloat(expense.jackAmount).toFixed(2)}</p>
                             <p class="card-text"><strong>Ste ha messo:</strong> €${parseFloat(expense.steAmount).toFixed(2)}</p>
@@ -94,7 +95,15 @@
             // Assegna un colore in base al giorno della settimana
             const date = new Date(dateString);
             const day = date.getDay();
-            const colors = ["#FFCDD2", "#E1BEE7", "#BBDEFB", "#C8E6C9", "#FFECB3", "#FFAB91", "#D1C4E9"];
+            const colors = [
+                "rgba(255, 205, 210, 0.8)", // Lunedì
+                "rgba(225, 190, 231, 0.8)", // Martedì
+                "rgba(187, 222, 251, 0.8)", // Mercoledì
+                "rgba(200, 230, 201, 0.8)", // Giovedì
+                "rgba(255, 236, 179, 0.8)", // Venerdì
+                "rgba(255, 171, 145, 0.8)", // Sabato
+                "rgba(209, 196, 233, 0.8)"  // Domenica
+            ];
             return colors[day]; // Ritorna un colore diverso per ogni giorno della settimana
         }
     </script>
