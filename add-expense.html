@@ -3,18 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestione Spese - Spese</title>
+    <title>Gestione Spese - Aggiungi Spesa</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- CSS Personalizzato -->
     <link rel="stylesheet" href="/gestione-spese-2-v2/style.css">
-
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -33,85 +27,146 @@
         const db = firebase.firestore();
 
         document.addEventListener('DOMContentLoaded', function() {
-            displayExpenses();
-        });
+            // Imposta la data odierna come valore predefinito
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
 
-        function displayExpenses() {
-            const expenseList = document.getElementById('expenseList');
+            const expenseForm = document.getElementById('expenseForm');
+            const splitType = document.getElementById('splitType');
+            const splitDetails = document.getElementById('splitDetails');
 
-            db.collection("expenses").orderBy("date", "desc").onSnapshot((querySnapshot) => {
-                if (expenseList) {
-                    expenseList.innerHTML = '';
+            // Mostra o nasconde le celle di input per l'importo esatto
+            splitType.addEventListener('change', function() {
+                if (splitType.value === 'exact') {
+                    splitDetails.style.display = 'block';
+                } else {
+                    splitDetails.style.display = 'none';
                 }
-
-                querySnapshot.forEach((doc) => {
-                    const expense = doc.data();
-                    const card = document.createElement('div');
-                    card.className = 'card mb-3';
-                    const dateColor = getDateColor(expense.date);
-                    card.innerHTML = `
-                        <div class="card-body">
-                            <h5 class="card-title">${expense.description}</h5>
-                            <span class="badge" style="background-color: ${dateColor}; opacity: 0.8;">${formatDate(expense.date)}</span>
-                            <p class="card-text mt-2"><strong>Totale:</strong> €${parseFloat(expense.totalAmount).toFixed(2)}</p>
-                            <p class="card-text"><strong>Jack ha messo:</strong> €${parseFloat(expense.jackAmount).toFixed(2)}</p>
-                            <p class="card-text"><strong>Ste ha messo:</strong> €${parseFloat(expense.steAmount).toFixed(2)}</p>
-                            <p class="card-text"><strong>Jack deve:</strong> €${parseFloat(expense.jackShare).toFixed(2)}</p>
-                            <p class="card-text"><strong>Ste deve:</strong> €${parseFloat(expense.steShare).toFixed(2)}</p>
-                            <button class="btn btn-danger btn-sm mt-2" onclick="confirmDeleteExpense('${doc.id}')"><i class="fas fa-trash"></i> Elimina</button>
-                        </div>
-                    `;
-                    if (expenseList) {
-                        expenseList.appendChild(card);
-                    }
-                });
             });
-        }
 
-        function confirmDeleteExpense(id) {
-            if (confirm("Sei sicuro di voler eliminare questa spesa?")) {
-                deleteExpense(id);
-            }
-        }
+            if (expenseForm) {
+                expenseForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
 
-        function deleteExpense(id) {
-            db.collection("expenses").doc(id).delete()
-                .then(() => {
-                    displayExpenses();
-                })
-                .catch((error) => {
-                    console.error("Errore nell'eliminare la spesa: ", error);
+                    const description = document.getElementById('description').value;
+                    const date = document.getElementById('date').value;
+                    const totalAmount = parseFloat(document.getElementById('totalAmount').value);
+                    const jackAmount = parseFloat(document.getElementById('jackAmount').value);
+                    const steAmount = parseFloat(document.getElementById('steAmount').value);
+                    let jackShare, steShare;
+
+                    if (splitType.value === 'equally') {
+                        jackShare = totalAmount / 2;
+                        steShare = totalAmount / 2;
+                    } else {
+                        jackShare = parseFloat(document.getElementById('jackShare').value);
+                        steShare = parseFloat(document.getElementById('steShare').value);
+
+                        if ((jackShare + steShare) !== totalAmount) {
+                            alert('La somma degli importi dovuti da Jack e Ste non corrisponde al totale della spesa.');
+                            return;
+                        }
+                    }
+
+                    console.log("Descrizione:", description);
+                    console.log("Data:", date);
+                    console.log("Importo totale:", totalAmount);
+                    console.log("Jack ha messo:", jackAmount);
+                    console.log("Ste ha messo:", steAmount);
+                    console.log("Jack deve:", jackShare);
+                    console.log("Ste deve:", steShare);
+
+                    if ((jackAmount + steAmount) !== totalAmount) {
+                        alert('La somma degli importi messi da Jack e Ste non corrisponde al totale della spesa.');
+                        return;
+                    }
+
+                    db.collection("expenses").add({
+                        description,
+                        date,
+                        totalAmount,
+                        jackAmount,
+                        steAmount,
+                        jackShare,
+                        steShare
+                    }).then(() => {
+                        console.log("Spesa aggiunta con successo!");
+                        window.location.href = '/gestione-spese-2-v2/expenses.html';
+                    }).catch((error) => {
+                        console.error("Errore durante l'aggiunta della spesa:", error);
+                        alert("Errore durante l'aggiunta della spesa. Si prega di riprovare.");
+                    });
                 });
-        }
-
-        function formatDate(dateString) {
-            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-            const date = new Date(dateString);
-            return date.toLocaleDateString('it-IT', options);
-        }
-
-        function getDateColor(dateString) {
-            // Assegna un colore in base al giorno della settimana
-            const date = new Date(dateString);
-            const day = date.getDay();
-            const colors = ["#FFCDD2", "#E1BEE7", "#BBDEFB", "#C8E6C9", "#FFECB3", "#FFAB91", "#D1C4E9"];
-            return colors[day]; // Ritorna un colore diverso per ogni giorno della settimana
-        }
+            } else {
+                console.error("Elemento 'expenseForm' non trovato nel DOM.");
+            }
+        });
     </script>
 </head>
 <body>
     <div class="container">
-        <h2 class="my-4">Elenco Spese</h2>
-        <div id="expenseList"></div>
+        <h2 class="my-4">Inserisci Nuova Spesa</h2>
+        <div id="expenseFormContainer" class="card p-4 mb-4">
+            <form id="expenseForm" class="form-group">
+                <input type="text" id="description" class="form-control mb-3" placeholder="Descrizione spesa" required>
+                <input type="date" id="date" class="form-control mb-3" required>
+                <input type="number" id="totalAmount" class="form-control mb-3" placeholder="Importo totale" required>
+
+                <h3>Chi ha messo cosa:</h3>
+                <div id="payers">
+                    <div class="form-row mb-3">
+                        <label class="col-sm-4 col-form-label">Jack:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="jackAmount" class="form-control" placeholder="Importo messo da Jack" required>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <label class="col-sm-4 col-form-label">Ste:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="steAmount" class="form-control" placeholder="Importo messo da Ste" required>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Divisione della spesa:</h3>
+                <div id="splitMethod" class="mb-3">
+                    <label for="splitType">Tipo di divisione:</label>
+                    <select id="splitType" class="form-control">
+                        <option value="equally">Equamente</option>
+                        <option value="exact">Importo esatto</option>
+                    </select>
+                </div>
+
+                <div id="splitDetails" style="display: none;">
+                    <div class="form-row mb-3">
+                        <label class="col-sm-4 col-form-label">Dovuto da Jack:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="jackShare" class="form-control" placeholder="Importo dovuto da Jack">
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <label class="col-sm-4 col-form-label">Dovuto da Ste:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="steShare" class="form-control" placeholder="Importo dovuto da Ste">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success">Aggiungi Spesa</button>
+            </form>
+        </div>
     </div>
 
     <!-- Barra di navigazione -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom" id="navbar">
         <div class="container-fluid">
             <a class="navbar-brand" href="/gestione-spese-2-v2/index.html">Home</a>
             <a class="navbar-brand" href="/gestione-spese-2-v2/add-expense.html">+</a>
             <a class="navbar-brand" href="/gestione-spese-2-v2/expenses.html">Spese</a>
         </div>
     </nav>
+
+    <!-- Caricamento di app.js DOPO Firebase -->
+    <script src="/gestione-spese-2-v2/app.js"></script>
 </body>
 </html>
