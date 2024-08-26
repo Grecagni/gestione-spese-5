@@ -148,24 +148,24 @@ h1, h2 {
 
 /* Riduzione spazio tra voci nelle card */
 .card-text {
-    margin-bottom: 0.25rem; /* Ridotto lo spazio tra le voci */
+    margin-bottom: 0.1rem; /* Ridotto lo spazio tra le voci */
 }
 
 /* Stili per la card con sfondo trasparente dinamico */
 .card {
-    border-radius: 10px;
-    padding: 15px;
+    border-radius: 5px;
+    padding: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     background-color: rgba(255, 205, 210, 0.8); /* Colore dinamico in base alla data */
 }
 
 /* Stili per la data */
 .card .badge {
-    font-size: 0.9rem;
-    padding: 5px 10px;
+    font-size: 0.7rem;
+    padding: 2px 4px;
     border-radius: 5px;
     color: #000; /* Testo nero */
     background-color: transparent; /* Rimosso colore di sfondo */
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
 }
