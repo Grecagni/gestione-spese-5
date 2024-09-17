@@ -1,100 +1,43 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestione Spese - Home</title>
 
-    <!-- Manifest per PWA -->
-    <link rel="manifest" href="/gestione-spese-5/manifest.json">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- CSS Personalizzato -->
-    <link rel="stylesheet" href="/gestione-spese-5/style.css">
-    
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-    <!-- Configurazione Firebase -->
-    <script>
-        var firebaseConfig = {
-            apiKey: "AIzaSyDzS6gAECDdt3QKVxn7pqufT3hqFmKbTF8",
-            authDomain: "gestione-spese-5.firebaseapp.com",
-            projectId: "gestione-spese-5",
-            storageBucket: "gestione-spese-5.appspot.com",
-            messagingSenderId: "430654396279",
-            appId: "1:430654396279:web:0d0e519dca90adcf45f372"
-        };
+    <!DOCTYPE html>
+    <html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gestione Spese - Home</title>
         
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+        <!-- Manifest for PWA -->
+        <link rel="manifest" href="/gestione-spese-5/manifest.json">
+        
+        <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- CSS Personalizzato -->
+        <link rel="stylesheet" href="/gestione-spese-5/style.css">
+        
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDzS6gAECDdt3QKVxn7pqufT3hqFmKbTF8",
-  authDomain: "gestione-spese-5.firebaseapp.com",
-  projectId: "gestione-spese-5",
-  storageBucket: "gestione-spese-5.appspot.com",
-  messagingSenderId: "430654396279",
-  appId: "1:430654396279:web:0d0e519dca90adcf45f372"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-
-firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-    </script>
-</head>
-<body>
-    <div class="container">
-        <h1 class="text-center my-4">Gestione Spese</h1>
-
-        <!-- Area login -->
-        <div id="login-container" style="display: none;">
-            <h2>Accedi</h2>
-            <form id="loginForm">
-                <input type="email" id="loginEmail" class="form-control mb-3" placeholder="Email" required>
-                <input type="password" id="loginPassword" class="form-control mb-3" placeholder="Password" required>
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
-        </div>
-
-        <!-- Area contenuti visibili solo dopo il login -->
-        <div id="content-container" style="display: none;">
-            <h2>Saldo Finale</h2>
-            <div id="totalBalance" class="balance-text mb-4"></div>
-            <div id="balanceBarContainer" class="mb-4">
-                <div id="balanceBar" class="progress">
-                    <div id="balanceBarFill" class="progress-bar"></div>
-                </div>
-            </div>
-
-            <h2>Ultime Spese</h2>
-            <ul id="recentExpenses" class="list-group mb-4"></ul>
-
-            <!-- Barra di navigazione -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="/gestione-spese-5/index.html">Home</a>
-                    <a class="navbar-brand" href="/gestione-spese-5/add-expense.html">+</a>
-                    <a class="navbar-brand" href="/gestione-spese-5/expenses.html">Spese</a>
-                </div>
-            </nav>
-        </div>
-    </div>
-
-    <!-- Caricamento di app.js DOPO Firebase -->
-    <script src="/gestione-spese-5/app.js"></script>
-</body>
-</html>
+        <!-- Firebase Scripts -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+        
+        <!-- Firebase Initialization -->
+        <script>
+            const firebaseConfig = {
+              apiKey: "AIzaSyDzS6gAECDdt3QKVxn7pqufT3hqFmKbTF8",
+              authDomain: "gestione-spese-5.firebaseapp.com",
+              projectId: "gestione-spese-5",
+              storageBucket: "gestione-spese-5.appspot.com",
+              messagingSenderId: "430654396279",
+              appId: "1:430654396279:web:0d0e519dca90adcf45f372"
+            };
+            const app = firebase.initializeApp(firebaseConfig);
+        </script>
+    </head>
+    <body>
+        <!-- Content goes here -->
+    </body>
+    </html>
+    
