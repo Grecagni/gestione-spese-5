@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/gestione-spese-2-v2/service-worker.js')
+            navigator.serviceWorker.register('/gestione-spese-5/service-worker.js')
                 .then(registration => {
                     console.log('Service Worker registrato con successo:', registration);
                 })

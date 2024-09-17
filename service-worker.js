@@ -3,12 +3,12 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open('gestione-spese-cache').then((cache) => {
             return cache.addAll([
-                '/gestione-spese-2-v2/',
-                '/gestione-spese-2-v2/index.html',
-                '/gestione-spese-2-v2/add-expense.html',
-                '/gestione-spese-2-v2/expenses.html',
-                '/gestione-spese-2-v2/style.css',
-                '/gestione-spese-2-v2/app.js'
+                '/gestione-spese-5/',
+                '/gestione-spese-5/index.html',
+                '/gestione-spese-5/add-expense.html',
+                '/gestione-spese-5/expenses.html',
+                '/gestione-spese-5/style.css',
+                '/gestione-spese-5/app.js'
             ]);
         })
     );

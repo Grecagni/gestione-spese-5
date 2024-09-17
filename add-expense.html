@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/gestione-spese-2-v2/style.css">
+    <link rel="stylesheet" href="/gestione-spese-5/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -23,7 +23,27 @@
             messagingSenderId: "583349146945",
             appId: "1:583349146945:web:af0989d9c1889b1ef77dc0"
         };
-        firebase.initializeApp(firebaseConfig);
+        
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDzS6gAECDdt3QKVxn7pqufT3hqFmKbTF8",
+  authDomain: "gestione-spese-5.firebaseapp.com",
+  projectId: "gestione-spese-5",
+  storageBucket: "gestione-spese-5.appspot.com",
+  messagingSenderId: "430654396279",
+  appId: "1:430654396279:web:0d0e519dca90adcf45f372"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+
+firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -91,7 +111,7 @@
                         steShare
                     }).then(() => {
                         console.log("Spesa aggiunta con successo!");
-                        window.location.href = '/gestione-spese-2-v2/expenses.html';
+                        window.location.href = '/gestione-spese-5/expenses.html';
                     }).catch((error) => {
                         console.error("Errore durante l'aggiunta della spesa:", error);
                         alert("Errore durante l'aggiunta della spesa. Si prega di riprovare.");
@@ -160,13 +180,13 @@
     <!-- Barra di navigazione -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom" id="navbar">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/gestione-spese-2-v2/index.html">Home</a>
-            <a class="navbar-brand" href="/gestione-spese-2-v2/add-expense.html">+</a>
-            <a class="navbar-brand" href="/gestione-spese-2-v2/expenses.html">Spese</a>
+            <a class="navbar-brand" href="/gestione-spese-5/index.html">Home</a>
+            <a class="navbar-brand" href="/gestione-spese-5/add-expense.html">+</a>
+            <a class="navbar-brand" href="/gestione-spese-5/expenses.html">Spese</a>
         </div>
     </nav>
 
     <!-- Caricamento di app.js DOPO Firebase -->
-    <script src="/gestione-spese-2-v2/app.js"></script>
+    <script src="/gestione-spese-5/app.js"></script>
 </body>
 </html>
