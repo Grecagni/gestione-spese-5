@@ -24,7 +24,7 @@
     
     <!-- Firebase Initialization -->
     <script>
-        const firebaseConfig = {
+        var firebaseConfig = {
           apiKey: "AIzaSyDzS6gAECDdt3QKVxn7pqufT3hqFmKbTF8",
           authDomain: "gestione-spese-5.firebaseapp.com",
           projectId: "gestione-spese-5",
@@ -32,10 +32,49 @@
           messagingSenderId: "430654396279",
           appId: "1:430654396279:web:0d0e519dca90adcf45f372"
         };
-        const app = firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(firebaseConfig);
+        const app = firebase.firestore();
     </script>
 </head>
 <body>
-    <!-- Content goes here -->
+    <div class="container">
+        <h1 class="text-center my-4">Gestione Spese</h1>
+
+        <!-- Area login -->
+        <div id="login-container" style="display: none;">
+            <h2>Accedi</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" class="form-control mb-3" placeholder="Email" required>
+                <input type="password" id="loginPassword" class="form-control mb-3" placeholder="Password" required>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+
+        <!-- Area contenuti visibili solo dopo il login -->
+        <div id="content-container" style="display: none;">
+            <h2>Saldo Finale</h2>
+            <div id="totalBalance" class="balance-text mb-4"></div>
+            <div id="balanceBarContainer" class="mb-4">
+                <div id="balanceBar" class="progress">
+                    <div id="balanceBarFill" class="progress-bar"></div>
+                </div>
+            </div>
+
+            <h2>Ultime Spese</h2>
+            <ul id="recentExpenses" class="list-group mb-4"></ul>
+
+            <!-- Barra di navigazione -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/gestione-spese-5/index.html">Home</a>
+                    <a class="navbar-brand" href="/gestione-spese-5/add-expense.html">+</a>
+                    <a class="navbar-brand" href="/gestione-spese-5/expenses.html">Spese</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Caricamento di app.js DOPO Firebase -->
+    <script src="/gestione-spese-2-v2/app.js"></script>
 </body>
 </html>
