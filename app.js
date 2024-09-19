@@ -1,4 +1,3 @@
-
     document.addEventListener('DOMContentLoaded', function() {
         if (!firebase.apps.length) {
             console.error('Firebase NON è stato inizializzato. Verifica la configurazione e il caricamento degli script.');
