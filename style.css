@@ -98,6 +98,7 @@ h1, h2 {
 
 .flip-card {
     background-color: transparent;
+    border: 1px solid #f1f1f1;
     perspective: 1000px; /* Aggiunge profondità */
 }
 
@@ -117,6 +118,7 @@ h1, h2 {
     position: absolute;
     width: 100%;
     height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
     backface-visibility: hidden; /* Nasconde il lato posteriore */
 }
 

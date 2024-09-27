@@ -50,21 +50,23 @@ function displayExpenses() {
             card.className = 'card flip-card mb-3'; // Aggiunta classe flip-card per il flip
 
             card.innerHTML = `
-                <div class="flip-card-inner">
-                    <div class="flip-card-front" style="background-color:${getDateColor(expense.date)};">
-                        <div class="card-body">
-                            <h5 class="card-title">${expense.description}</h5>
-                            <span class="badge">${formatDate(expense.date)}</span>
-                            <p class="card-text mt-2"><strong>Totale:</strong> €${parseFloat(expense.totalAmount).toFixed(2)}</p>
-                            <button class="btn btn-danger btn-sm mt-2" onclick="confirmDeleteExpense('${doc.id}')"><i class="fas fa-trash"></i> Elimina</button>
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-body">
+                                <h5 class="card-title">${expense.description}</h5>
+                                <span class="badge">${formatDate(expense.date)}</span>
+                                <p class="card-text mt-2"><strong>Totale:</strong> €${parseFloat(expense.totalAmount).toFixed(2)}</p>
+                                <button class="btn btn-danger btn-sm mt-2" onclick="confirmDeleteExpense('${doc.id}')"><i class="fas fa-trash"></i> Elimina</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flip-card-back">
-                        <div class="card-body">
-                            <p class="card-text"><strong>Jack ha messo:</strong> €${parseFloat(expense.jackAmount).toFixed(2)}</p>
-                            <p class="card-text"><strong>Ste ha messo:</strong> €${parseFloat(expense.steAmount).toFixed(2)}</p>
-                            <p class="card-text"><strong>Jack deve:</strong> €${parseFloat(expense.jackShare).toFixed(2)}</p>
-                            <p class="card-text"><strong>Ste deve:</strong> €${parseFloat(expense.steShare).toFixed(2)}</p>
+                        <div class="flip-card-back">
+                            <div class="card-body">
+                                <p class="card-text"><strong>Jack ha messo:</strong> €${parseFloat(expense.jackAmount).toFixed(2)}</p>
+                                <p class="card-text"><strong>Ste ha messo:</strong> €${parseFloat(expense.steAmount).toFixed(2)}</p>
+                                <p class="card-text"><strong>Jack deve:</strong> €${parseFloat(expense.jackShare).toFixed(2)}</p>
+                                <p class="card-text"><strong>Ste deve:</strong> €${parseFloat(expense.steShare).toFixed(2)}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
