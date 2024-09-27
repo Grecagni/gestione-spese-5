@@ -139,7 +139,7 @@ h1, h2 {
 #expenseList {
     display: flex;
     flex-direction: column; /* Disposizione verticale */
-    gap: 15px; /* Spaziatura tra le card */
+    gap: 300px; /* Spaziatura tra le card */
 }
 
 .card {
