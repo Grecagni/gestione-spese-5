@@ -133,3 +133,18 @@ h1, h2 {
     background-color: #f8f9fa; /* Colore di sfondo per il retro */
     padding: 15px; /* Padding per il retro */
 }
+
+#expenseList {
+    display: flex;
+    flex-direction: column; /* Disposizione verticale */
+    gap: 15px; /* Spaziatura tra le card */
+}
+
+.card {
+    margin-bottom: 15px; /* distanza tra le card */
+    border: 1px solid #ccc; /* Bordi per le card */
+    border-radius: 8px; /* Angoli arrotondati */
+    padding: 15px; /* Padding interno */
+    background-color: #fff; /* Colore di sfondo delle card */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombra per effetto */
+}
