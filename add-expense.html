@@ -4,30 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Spese - Aggiungi Spesa</title>
-
+    
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/gestione-spese-5/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- Solo Firestore -->
 
     <!-- Configurazione Firebase -->
     <script>
         var firebaseConfig = {
-            apiKey: "AIzaSyDzS6gAECDdt3QKVxn7pqufT3hqFmKbTF8",
+            apiKey: "CHIAVE_API",
             authDomain: "gestione-spese-5.firebaseapp.com",
             projectId: "gestione-spese-5",
             storageBucket: "gestione-spese-5.appspot.com",
-            messagingSenderId: "430654396279",
-            appId: "1:430654396279:web:0d0e519dca90adcf45f372"
+            messagingSenderId: "ID_MESSAGGI",
+            appId: "ID_APP"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Imposta la data odierna come valore predefinito
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('date').value = today;
 
@@ -35,71 +33,39 @@
             const splitType = document.getElementById('splitType');
             const splitDetails = document.getElementById('splitDetails');
 
-            // Mostra o nasconde le celle di input per l'importo esatto
             splitType.addEventListener('change', function() {
-                if (splitType.value === 'exact') {
-                    splitDetails.style.display = 'block';
-                } else {
-                    splitDetails.style.display = 'none';
-                }
+                splitDetails.style.display = splitType.value === 'exact' ? 'block' : 'none';
             });
 
-            if (expenseForm) {
-                expenseForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
+            expenseForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const description = document.getElementById('description').value;
+                const date = document.getElementById('date').value;
+                const totalAmount = parseFloat(document.getElementById('totalAmount').value);
+                const jackAmount = parseFloat(document.getElementById('jackAmount').value);
+                const steAmount = parseFloat(document.getElementById('steAmount').value);
+                let jackShare, steShare;
 
-                    const description = document.getElementById('description').value;
-                    const date = document.getElementById('date').value;
-                    const totalAmount = parseFloat(document.getElementById('totalAmount').value);
-                    const jackAmount = parseFloat(document.getElementById('jackAmount').value);
-                    const steAmount = parseFloat(document.getElementById('steAmount').value);
-                    let jackShare, steShare;
-
-                    if (splitType.value === 'equally') {
-                        jackShare = totalAmount / 2;
-                        steShare = totalAmount / 2;
-                    } else {
-                        jackShare = parseFloat(document.getElementById('jackShare').value);
-                        steShare = parseFloat(document.getElementById('steShare').value);
-
-                        if ((jackShare + steShare) !== totalAmount) {
-                            alert('La somma degli importi dovuti da Jack e Ste non corrisponde al totale della spesa.');
-                            return;
-                        }
-                    }
-
-                    console.log("Descrizione:", description);
-                    console.log("Data:", date);
-                    console.log("Importo totale:", totalAmount);
-                    console.log("Jack ha messo:", jackAmount);
-                    console.log("Ste ha messo:", steAmount);
-                    console.log("Jack deve:", jackShare);
-                    console.log("Ste deve:", steShare);
-
-                    if ((jackAmount + steAmount) !== totalAmount) {
-                        alert('La somma degli importi messi da Jack e Ste non corrisponde al totale della spesa.');
+                if (splitType.value === 'equally') {
+                    jackShare = totalAmount / 2;
+                    steShare = totalAmount / 2;
+                } else {
+                    jackShare = parseFloat(document.getElementById('jackShare').value);
+                    steShare = parseFloat(document.getElementById('steShare').value);
+                    if ((jackShare + steShare) !== totalAmount) {
+                        alert('La somma degli importi non corrisponde al totale.');
                         return;
                     }
+                }
 
-                    db.collection("expenses").add({
-                        description,
-                        date,
-                        totalAmount,
-                        jackAmount,
-                        steAmount,
-                        jackShare,
-                        steShare
-                    }).then(() => {
-                        console.log("Spesa aggiunta con successo!");
-                        window.location.href = '/gestione-spese-5/expenses.html';
-                    }).catch((error) => {
-                        console.error("Errore durante l'aggiunta della spesa:", error);
-                        alert("Errore durante l'aggiunta della spesa. Si prega di riprovare.");
-                    });
+                db.collection("expenses").add({
+                    description, date, totalAmount, jackAmount, steAmount, jackShare, steShare
+                }).then(() => {
+                    window.location.href = '/gestione-spese-5/expenses.html';
+                }).catch((error) => {
+                    alert("Errore durante l'aggiunta della spesa.");
                 });
-            } else {
-                console.error("Elemento 'expenseForm' non trovato nel DOM.");
-            }
+            });
         });
     </script>
 </head>

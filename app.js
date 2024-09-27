@@ -1,18 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log(firebase.apps.length ? "Firebase è stato inizializzato" : "Firebase NON è stato inizializzato");
 
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/gestione-spese-5/service-worker.js')
-                .then(registration => {
-                    console.log('Service Worker registrato con successo:', registration);
-                })
-                .catch(error => {
-                    console.log('Service Worker registration failed:', error);
-                });
-        });
-    }
-
     firebase.auth().onAuthStateChanged((user) => {
         toggleAuthUI(user);
         if (user && window.location.pathname.includes("index.html")) {

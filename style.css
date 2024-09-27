@@ -1,6 +1,4 @@
-/* Stile Moderno per la Tabella e il Testo */
-
-/* Generale */
+/* Stile Generale */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background-color: #f8f9fa;
@@ -16,54 +14,6 @@ h1, h2 {
 .container {
     max-width: 100%;
     padding: 15px;
-}
-
-/* Stili per la tabella */
-#expenseTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 0.75rem; /* Testo piccolo ridotto */
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-}
-
-#expenseTable th, #expenseTable td {
-    padding: 4px; /* Ridotto per adattarsi meglio */
-    text-align: center;
-    border: 1px solid #A5D6A7; /* Bordi chiari per le celle */
-    white-space: nowrap; /* Adatta la cella al contenuto */
-    font-size: 0.75rem; /* Assicurati che la dimensione del testo sia ridotta anche nelle celle */
-}
-
-#expenseTable th {
-    background-color: #4CAF50; /* Verde per l'intestazione */
-    color: white;
-    border: 1px solid #388E3C; /* Verde scuro per il bordo dell'intestazione */
-    font-weight: bold;
-}
-
-#expenseTable tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-#expenseTable tbody tr:nth-child(odd) {
-    background-color: #e6ffe6;
-}
-
-/* Riduci la dimensione del pulsante X */
-#expenseTable .btn-delete {
-    padding: 2px 5px !important; /* Riduci il padding per un pulsante compatto */
-    font-size: 0.75rem !important; /* Assicura una dimensione del testo ridotta */
-    line-height: 1 !important; /* Riduci l'altezza della linea */
-    border-radius: 3px !important; /* Bordo arrotondato piccolo */
-    background-color: #dc3545 !important; /* Colore rosso per il pulsante */
-    color: white !important; /* Colore del testo bianco */
-    border: none !important; /* Nessun bordo */
-    cursor: pointer !important; /* Cambia il cursore su hover */
-}
-
-#expenseTable .btn-delete:hover {
-    background-color: #c82333 !important; /* Colore diverso su hover */
 }
 
 /* Stili per i pulsanti */
@@ -86,15 +36,15 @@ h1, h2 {
 .navbar .navbar-brand {
     color: #007bff;
     font-weight: 600;
-    font-size: 1.2rem; /* Aumentato da 0.9rem a 1.2rem per rendere i pulsanti più grandi */
-    padding: 10px 15px; /* Aggiustato il padding per un tocco migliore */
+    font-size: 1.2rem;
+    padding: 10px 15px;
 }
 
 .navbar .navbar-brand:hover {
     color: #0056b3;
 }
 
-/* Migliora il testo della situazione finanziaria nella home */
+/* Miglioramenti del testo per il saldo */
 #totalBalance {
     font-size: 1.25rem;
     font-weight: 500;
@@ -121,12 +71,7 @@ h1, h2 {
     color: #007bff;
 }
 
-/* Nascondi i campi esatti di default (gestito in JavaScript) */
-#splitDetails {
-    display: none;
-}
-
-/* Aggiunta della barra di stato per la situazione finanziaria */
+/* Barra di stato per la situazione finanziaria */
 #balanceBarContainer {
     width: 100%;
     height: 30px;
@@ -144,28 +89,4 @@ h1, h2 {
     background-color: #28a745;
     transition: width 0.5s;
     border-radius: 15px;
-}
-
-/* Riduzione spazio tra voci nelle card */
-.card-text {
-    margin-bottom: 0.1rem; /* Ridotto lo spazio tra le voci */
-}
-
-/* Stili per la card con sfondo trasparente dinamico */
-.card {
-    border-radius: 5px;
-    padding: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    background-color: rgba(255, 205, 210, 0.8); /* Colore dinamico in base alla data */
-}
-
-/* Stili per la data */
-.card .badge {
-    font-size: 0.7rem;
-    padding: 2px 4px;
-    border-radius: 5px;
-    color: #000; /* Testo nero */
-    background-color: transparent; /* Rimosso colore di sfondo */
-    margin-top: 0.2rem;
-    margin-bottom: 0.2rem;
 }
