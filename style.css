@@ -16,6 +16,11 @@ h1, h2 {
     padding: 15px;
 }
 
+.hidden {
+    display: none;
+}
+
+
 /* Stili per i pulsanti */
 .btn-success {
     background-color: #28a745;

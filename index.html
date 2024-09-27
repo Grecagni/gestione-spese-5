@@ -4,25 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Spese - Home</title>
+    <meta name="description" content="Gestione Spese Application for tracking expenses.">
     
-    <!-- Manifest for PWA -->
     <link rel="manifest" href="/gestione-spese-5/manifest.json">
-    
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- CSS Personalizzato -->
     <link rel="stylesheet" href="/gestione-spese-5/style.css">
     
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     
-    <!-- Firebase Initialization -->
     <script>
         var firebaseConfig = {
           apiKey: "AIzaSyDzS6gAECDdt3QKVxn7pqufT3hqFmKbTF8",
@@ -40,8 +32,7 @@
     <div class="container">
         <h1 class="text-center my-4">Gestione Spese</h1>
 
-        <!-- Area login -->
-        <div id="login-container" style="display: none;">
+        <div id="login-container" class="hidden">
             <h2>Accedi</h2>
             <form id="loginForm">
                 <input type="email" id="loginEmail" class="form-control mb-3" placeholder="Email" required>
@@ -50,8 +41,7 @@
             </form>
         </div>
 
-        <!-- Area contenuti visibili solo dopo il login -->
-        <div id="content-container" style="display: none;">
+        <div id="content-container" class="hidden">
             <h2>Saldo Finale</h2>
             <div id="totalBalance" class="balance-text mb-4"></div>
             <div id="balanceBarContainer" class="mb-4">
@@ -63,7 +53,6 @@
             <h2>Ultime Spese</h2>
             <ul id="recentExpenses" class="list-group mb-4"></ul>
 
-            <!-- Barra di navigazione -->
             <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="/gestione-spese-5/index.html">Home</a>
@@ -74,7 +63,6 @@
         </div>
     </div>
 
-    <!-- Caricamento di app.js DOPO Firebase -->
     <script src="/gestione-spese-5/app.js"></script>
 </body>
 </html>
