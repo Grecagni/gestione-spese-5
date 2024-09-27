@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    
     firebase.auth().onAuthStateChanged((user) => {
         toggleAuthUI(user);
         if (user && window.location.pathname.includes("index.html")) {
